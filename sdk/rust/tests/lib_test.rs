@@ -4,6 +4,7 @@ use codex_security_sdk::model;
 use codex_security_sdk::proof;
 use codex_security_sdk::scan;
 use codex_security_sdk::SdkConfig;
+use serial_test::serial;
 use std::collections::HashMap;
 use tempfile::TempDir;
 
@@ -20,6 +21,7 @@ where
     prev
 }
 
+#[serial]
 #[test]
 fn test_config_from_env_missing_key() {
     let prev_api = with_env("CODEX_API_KEY", "");
@@ -33,15 +35,16 @@ fn test_config_from_env_missing_key() {
     }
 }
 
+#[serial]
 #[test]
 fn test_client_constructable() {
-    let prev = with_env("CODEX_API_KEY", "test-key");
+    let prev = std::env::var("CODEX_API_KEY").ok();
+    std::env::set_var("CODEX_API_KEY", "test-key");
     let cfg = SdkConfig::from_env().unwrap();
     let _client = codex_security_sdk::client::CodexSecurityClient::new(cfg).unwrap();
-    if prev.is_some() {
-        std::env::set_var("CODEX_API_KEY", prev.unwrap());
-    } else {
-        std::env::remove_var("CODEX_API_KEY");
+    match prev {
+        Some(v) => std::env::set_var("CODEX_API_KEY", v),
+        None => std::env::remove_var("CODEX_API_KEY"),
     }
 }
 
@@ -120,6 +123,7 @@ fn test_compute_checksums() {
     assert!(checksums.contains_key("test"));
 }
 
+#[serial]
 #[test]
 fn test_credential_roundtrip() {
     let temp = TempDir::new().unwrap();
@@ -141,6 +145,7 @@ fn test_credential_roundtrip() {
     }
 }
 
+#[serial]
 #[test]
 fn test_credential_path_override() {
     let temp = TempDir::new().unwrap();

@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 use crate::config::SdkConfig;
 use crate::error::SdkError;
 use crate::scan;
@@ -42,5 +43,9 @@ impl CodexSecurityClient {
     ) -> Result<crate::model::ScanResult> {
         let result = scan::execute_scan(&self.config, target, model, effort).await?;
         Ok(result)
+    }
+
+    pub fn client_field_ref(&self) -> Option<&reqwest::Client> {
+        Some(&self.client)
     }
 }

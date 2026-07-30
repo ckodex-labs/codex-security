@@ -40,6 +40,7 @@ pub fn store_credential(auth_method: &str, api_key: &str) -> Result<()> {
     Ok(())
 }
 
+#[allow(dead_code)]
 pub fn load_credential() -> Result<Option<StoredCredential>> {
     let path = credential_path()?;
     if !path.exists() {
@@ -54,16 +55,12 @@ pub fn ensure_credential(auth_method: &str) -> Result<()> {
     match auth_method {
         "chatgpt" => {
             if std::env::var("CODEX_AUTH_METHOD").unwrap_or_default() != "chatgpt" {
-                bail!(
-                    "ChatGPT authentication requires CODEX_AUTH_METHOD=chatgpt to be set"
-                );
+                bail!("ChatGPT authentication requires CODEX_AUTH_METHOD=chatgpt to be set");
             }
         }
         "api-key" => {
             if std::env::var("CODEX_API_KEY").is_err() && std::env::var("OPENAI_API_KEY").is_err() {
-                bail!(
-                    "API key authentication requires CODEX_API_KEY or OPENAI_API_KEY to be set"
-                );
+                bail!("API key authentication requires CODEX_API_KEY or OPENAI_API_KEY to be set");
             }
         }
         other => bail!("Unknown auth method: {}", other),

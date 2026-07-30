@@ -2,6 +2,7 @@ use anyhow::Result;
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[allow(dead_code)]
 pub struct DecisionTrace {
     pub receipt_id: String,
     pub findings: Vec<crate::model::FindingSummary>,
@@ -11,6 +12,7 @@ pub struct DecisionTrace {
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[allow(dead_code)]
 pub struct PolicyResult {
     pub passed: bool,
     pub gate: String,
@@ -18,12 +20,14 @@ pub struct PolicyResult {
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[allow(dead_code)]
 pub struct EvidenceBundle {
     pub artifacts: Vec<String>,
     pub checksums: HashMap<String, String>,
     pub signature: Option<String>,
 }
 
+#[allow(dead_code)]
 pub fn generate_receipt(
     findings: &[crate::model::FindingSummary],
     gate: &str,
@@ -35,7 +39,11 @@ pub fn generate_receipt(
     let reason = if passed {
         None
     } else {
-        Some(format!("{} findings detected at gate {}", findings.len(), gate))
+        Some(format!(
+            "{} findings detected at gate {}",
+            findings.len(),
+            gate
+        ))
     };
 
     let artifacts = collect_artifacts()?;
@@ -58,6 +66,7 @@ pub fn generate_receipt(
     })
 }
 
+#[allow(dead_code)]
 pub fn sign_receipt(receipt: &mut DecisionTrace) -> Result<()> {
     let json = serde_json::to_string(&receipt)?;
     let digest = ring::digest::digest(&ring::digest::SHA256, json.as_bytes());
@@ -66,7 +75,8 @@ pub fn sign_receipt(receipt: &mut DecisionTrace) -> Result<()> {
     Ok(())
 }
 
-fn collect_artifacts() -> Result<Vec<String>> {
+#[allow(dead_code)]
+pub fn collect_artifacts() -> Result<Vec<String>> {
     let mut artifacts = Vec::new();
 
     if let Ok(cwd) = std::env::current_dir() {
@@ -80,7 +90,8 @@ fn collect_artifacts() -> Result<Vec<String>> {
     Ok(artifacts)
 }
 
-fn compute_checksums(artifacts: &[String]) -> Result<HashMap<String, String>> {
+#[allow(dead_code)]
+pub fn compute_checksums(artifacts: &[String]) -> Result<HashMap<String, String>> {
     let mut checksums = HashMap::new();
     for artifact in artifacts {
         let digest = ring::digest::digest(&ring::digest::SHA256, artifact.as_bytes());
@@ -89,9 +100,8 @@ fn compute_checksums(artifacts: &[String]) -> Result<HashMap<String, String>> {
     Ok(checksums)
 }
 
-pub fn load_or_generate_receipt(
-    receipt_path: Option<&str>,
-) -> Result<DecisionTrace> {
+#[allow(dead_code)]
+pub fn load_or_generate_receipt(receipt_path: Option<&str>) -> Result<DecisionTrace> {
     match receipt_path {
         Some(path) => {
             let content = std::fs::read_to_string(path)?;

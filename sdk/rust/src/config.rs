@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 use anyhow::Result;
 use serde::Deserialize;
 
@@ -5,6 +6,7 @@ use serde::Deserialize;
 pub struct SdkConfig {
     pub api_endpoint: String,
     pub api_key: String,
+    #[allow(dead_code)]
     pub auth_method: AuthMethod,
 }
 
@@ -20,7 +22,7 @@ impl SdkConfig {
             .unwrap_or_else(|_| "https://api.codex.openai.com/v1".to_string());
         let api_key = std::env::var("CODEX_API_KEY")
             .or_else(|_| std::env::var("OPENAI_API_KEY"))
-            .expect("CODEX_API_KEY or OPENAI_API_KEY must be set");
+            .map_err(|_| anyhow::anyhow!("CODEX_API_KEY or OPENAI_API_KEY must be set"))?;
         let auth_method = if std::env::var("CODEX_AUTH_METHOD").unwrap_or_default() == "chatgpt" {
             AuthMethod::Chatgpt
         } else {

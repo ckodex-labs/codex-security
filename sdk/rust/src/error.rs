@@ -1,6 +1,7 @@
 use thiserror::Error;
 
 #[derive(Debug, Error)]
+#[allow(dead_code)]
 pub enum SdkError {
     #[error("Authentication failed: {0}")]
     AuthError(String),

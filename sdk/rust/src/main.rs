@@ -53,7 +53,12 @@ async fn main() -> anyhow::Result<()> {
     let config = load_config()?;
 
     match command {
-        Commands::Scan { target, model, effort, output } => {
+        Commands::Scan {
+            target,
+            model,
+            effort,
+            output,
+        } => {
             info!("Starting scan of {}", target);
             let result = scan::execute_scan(&config, &target, model.as_deref(), &effort).await?;
 
@@ -72,13 +77,13 @@ async fn main() -> anyhow::Result<()> {
             );
         }
         Commands::Login { auth_method } => {
-            let method = auth_method
-                .as_deref()
-                .unwrap_or(if std::env::var("CODEX_AUTH_METHOD").unwrap_or_default() == "chatgpt" {
+            let method = auth_method.as_deref().unwrap_or(
+                if std::env::var("CODEX_AUTH_METHOD").unwrap_or_default() == "chatgpt" {
                     "chatgpt"
                 } else {
                     "api-key"
-                });
+                },
+            );
             credential::ensure_credential(method)?;
             info!("Login successful using {}", method);
         }

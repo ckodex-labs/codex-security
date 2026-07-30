@@ -2,9 +2,11 @@ use crate::client::CodexSecurityClient;
 use crate::config::SdkConfig;
 use crate::error::SdkError;
 use crate::model::ScanResult;
-use anyhow::Result;
 
-pub async fn execute_scan(config: SdkConfig, target: &str) -> Result<ScanResult> {
+pub async fn execute_scan(config: SdkConfig, target: &str) -> Result<ScanResult, SdkError> {
     let client = CodexSecurityClient::new(config)?;
-    client.run(target).await.map_err(SdkError::from)
+    match client.run(target).await {
+        Ok(result) => Ok(result),
+        Err(e) => Err(SdkError::ScanError(e.to_string())),
+    }
 }

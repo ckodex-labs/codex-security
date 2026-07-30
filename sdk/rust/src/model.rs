@@ -16,6 +16,14 @@ pub struct Finding {
     pub location: String,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct FindingSummary {
+    pub id: String,
+    pub severity: String,
+    pub title: String,
+    pub location: String,
+}
+
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum Severity {
     Critical,

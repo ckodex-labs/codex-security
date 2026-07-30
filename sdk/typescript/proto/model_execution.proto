@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package ckodex.model.v1;
+
+service ModelExecution {
+  rpc Execute(JsonEnvelope) returns (stream JsonEnvelope);
+  rpc Cancel(JsonEnvelope) returns (JsonEnvelope);
+}
+
+message JsonEnvelope {
+  bytes json = 1;
+}

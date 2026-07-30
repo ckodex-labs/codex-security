@@ -1,0 +1,26 @@
+{
+  "capturedFrom": "sdk/typescript/src/*.ts",
+  "purpose": "Pre-decomposition export inventory for compatibility review",
+  "modules": {
+    "api": "ScanOptions, ScanAuthMode, ScanAuthentication, ScanReconnectDetails, ScanPreflight, CodexSecurityMetadata, CodexSecurity, initialCredentialsAvailable, runScanEvents, scanAuthentication, classifyConnectionFailure, scanRuntimeCodexConfig, scanPreflightCodexConfig, environmentValue",
+    "auth": "LoginResult, AccountStatus, CodexLoginHandle, loginApiKey, accountStatus, logout, runCodex",
+    "bulk-scan-discovery": "BulkScanPrompt, BulkScanDiscoveryDependencies, BulkScanWizardResult, createBulkScanDiscoveryDependencies, runBulkScanWizard",
+    "cli": "runCodexSkillCommand, exportEnvironment, main, readSkillCommandOutput, skillCommandFailure, parseCodexOverrides, Progress",
+    "config": "ScanModelProvider, ScanModelProviderConfiguration, JsonPrimitive, JsonValue, JsonObject, CodexSecurityConfig, ScanModelConfiguration, DEFAULT_CODEX_CONFIG, scanModelConfiguration, mergedCodexConfig, scanModelProviderConfiguration, writeCodexConfig",
+    "contract": "ScanExpectation, LoadedContract, loadContract, requireScanFile",
+    "cost": "ScanCost, ScanCostTracker, estimateScanCost, formatUsd",
+    "errors": "CodexSecurityError, ConfigurationError, AuthenticationRequiredError, PluginBootstrapError, PluginPythonUnavailableError, InvalidTargetError, OutputDirectoryError, ProtectedScanPathKind, OutputInsideProtectedRootError, IncompleteScanError, ContractValidationError, ScanInterruptedError, ScanCostLimitExceededError",
+    "index": "package root re-exports; compare generated dist/index.d.ts",
+    "knowledge-base": "PreparedKnowledgeBase, prepareKnowledgeBase",
+    "models": "generated schema types; compare generated dist/models.d.ts",
+    "multiscan": "MultiscanOptions, MultiscanResult, runMultiscan, buildGitHubCredentialArgs",
+    "result": "TurnResultMetadata, ScanResultOptions, ScanResult",
+    "runtime": "MARKETPLACE_NAME, PLUGIN_NAME, PluginInstall, CodexCommand, ProcessEnvironment, PluginPythonOptions, WorkbenchCommandOptions, codexSecurityStateDirectory, preparePersistentScanRoot, runWorkbench, bundledPluginCandidates, bundledPluginRoot, validateOutputDir, planOutputArchive, requireModelSafeOutputDir, prepareOutputDir, validatePreparedOutputDir, requirePrivateOutputDirectory, createIsolatedHome, importAmbientAuth, extractPluginZip, resolvePluginPath, createMarketplace, resolveCodexCommand, codexPlatformPackage, bootstrapPlugin, pluginMetadata, resolvePluginPython, pluginExecutionEnvironment, cleanupSdkDirectory, isPythonPathCandidate, expandHome",
+    "scan-comparison": "ScanComparisonInput, ScanComparisonOptions, ScanComparisonResult, matchScanFindings",
+    "scan-history-renderer": "HistoryCommand, renderScanHistory",
+    "targets": "ScanMode, DiffTargetKind, DiffTargetOptions, DiffTarget, ScanTarget, NormalizedTargetKind, NormalizedTarget, normalizeRepository, resolveRepositoryPath, enclosingGitWorktreeRoot, validatedGitEnvironment, normalizeTarget, validateMode, repositoryRevision",
+    "trusted-executable": "TrustedExecutable, resolveTrustedExecutable",
+    "version": "VERSION, CODEX_SDK_VERSION, CODEX_EXECUTABLE_VERSION, BUNDLED_PLUGIN_VERSION, UpdateNotice, updateNoticeEnabled, updateCommand, checkForUpdate, formatUpdateNotice",
+    "worker-progress": "ScanWorkerPhase, ScanWorkerStatus, workerStatusFromEvent"
+  }
+}

@@ -1,0 +1,1 @@
+{"schemaVersion":1,"id":"urn:ckodex:policy:provider-projection:v1","rule":"verified_lock_and_bundle_required","onFailure":"halt"}

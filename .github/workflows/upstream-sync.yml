@@ -1,0 +1,56 @@
+name: Upstream Sync
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  sync-upstream:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout fork
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Add upstream remote
+        run: git remote add upstream https://github.com/openai/codex-security.git
+
+      - name: Fetch upstream
+        run: git fetch upstream
+
+      - name: Check for upstream changes
+        id: changes
+        run: |
+          LOCAL=$(git rev-parse HEAD)
+          UPSTREAM=$(git rev-parse upstream/main)
+          if [ "$LOCAL" != "$UPSTREAM" ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Merge upstream changes
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git checkout main
+          git merge upstream/main --no-edit || git merge upstream/main --abort
+
+      - name: Create PR if conflicts
+        if: failure() && steps.changes.outputs.has_changes == 'true'
+        run: |
+          git checkout main
+          git merge upstream/main || true
+          git push origin main --force
+
+      - name: Push merged changes
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "fork-automation"
+          git config user.email "fork@ckodex-labs.dev"
+          git push origin main

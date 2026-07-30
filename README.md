@@ -2,9 +2,19 @@
 
 `@openai/codex-security` is a CLI and TypeScript SDK for finding, validating, and fixing security vulnerabilities in your code.
 
-**See the [Codex Security documentation](https://learn.chatgpt.com/docs/security/cli)** for more details.
+**This repository is a fork of [OpenAI's codex-security](https://github.com/openai/codex-security) with a fundamental architecture rewrite.**
 
 > Note: for best results, we recommend that your account is verified for [Trusted Access](https://chatgpt.com/cyber).
+
+## Attribution
+
+This project is derived from the original `@openai/codex-security` repository by OpenAI, licensed under the Apache License 2.0. See [NOTICES.md](NOTICES.md) for full attribution details.
+
+We are fundamentally rewriting the entire architecture:
+- The backend scan engine and SDK are being replaced with a **Rust** implementation (`sdk/rust/`)
+- CLI tooling and build infrastructure use **Go** (`dagger/`)
+- The four-space hexagonal architecture (ADR-0001) is adopted for the rewrite
+- All backend work uses Rust or Go, not Python or TypeScript
 
 ## Quick start
 
@@ -48,6 +58,8 @@ directory outside the repository.
 
 ## TypeScript SDK
 
+The TypeScript SDK (`sdk/typescript/`) remains available during the migration to the Rust backend.
+
 ```ts
 import { CodexSecurity } from "@openai/codex-security";
 
@@ -58,7 +70,21 @@ console.log(result.reportPath);
 await security.close();
 ```
 
+## Rust SDK (Rewrite Target)
+
+The Rust SDK (`sdk/rust/`) is being developed as the replacement backend. It provides
+the same scan capabilities with improved performance, memory safety, and isolation.
+
+```rust
+use codex_security_sdk::CodexSecurityClient;
+use codex_security_sdk::SdkConfig;
+
+let config = SdkConfig::from_env()?;
+let client = CodexSecurityClient::new(config)?;
+let result = client.run(".").await?;
+```
+
 For complete command help, runtime defaults, native multi-agent worker limits,
 environment variables, deep-scan configuration, and SDK options, see the
-[package README](sdk/typescript/README.md) and the
+[TypeScript package README](sdk/typescript/README.md) and the
 [official CLI reference](https://learn.chatgpt.com/docs/security/cli/reference).
